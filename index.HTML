@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Ortografía y Redacción - Rematrícula WhatsApp</title>
     
-    <!-- Framework Tailwind CSS -->
+    <!-- Cargador de estilos Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Librería de Iconos FontAwesome -->
+    <!-- Librería de iconos vectoriales FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Estilos personalizados -->
+    <!-- Estilos personalizados para la tipografía e interfaz de conversación -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
@@ -19,12 +19,14 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
         
+        /* Fondo con patrón de textura para simular el papel tapiz de WhatsApp */
         .whatsapp-bg {
             background-color: #efeae2;
             background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
             background-size: 16px 16px;
         }
 
+        /* Resaltado de foco accesible para usuarios que navegan con teclado */
         button:focus-visible, a:focus-visible {
             outline: 3px solid #059669;
             outline-offset: 2px;
@@ -33,12 +35,12 @@
 </head>
 <body class="min-h-full flex flex-col justify-between text-slate-800 antialiased">
 
-    <!-- Acceso accesible por teclado -->
+    <!-- Enlace accesible para saltar directo al contenido con lector de pantalla o teclado -->
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-emerald-600 focus:text-white focus:z-50">
         Saltar al contenido principal
     </a>
 
-    <!-- Header -->
+    <!-- Encabezado superior institucional de la plataforma -->
     <header class="bg-emerald-800 text-white shadow-lg sticky top-0 z-40" role="banner">
         <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
@@ -51,6 +53,7 @@
                 </div>
             </div>
             
+            <!-- Indicador en tiempo real de la puntuación acumulada -->
             <div id="score-badge" class="hidden bg-emerald-900/80 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full border border-emerald-500/50 flex items-center space-x-1.5" aria-live="polite">
                 <i class="fa-solid fa-star text-amber-400 text-xs" aria-hidden="true"></i>
                 <span>Puntuación: <strong id="current-score" class="text-white">0</strong>/100</span>
@@ -58,10 +61,12 @@
         </div>
     </header>
 
-    <!-- Contenido Principal -->
+    <!-- Área principal de la aplicación -->
     <main id="main-content" class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6" role="main">
 
-        <!-- 1. Pantalla de Bienvenida -->
+        <!-- ==========================================
+             PANTALLA 1: Bienvenida e Introducción
+             ========================================== -->
         <section id="welcome-screen" class="bg-white rounded-2xl shadow-xl p-6 sm:p-10 text-center border border-slate-200/80 my-2 sm:my-4 transition-all">
             <div class="w-20 h-20 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl shadow-inner" aria-hidden="true">
                 <i class="fa-solid fa-comments"></i>
@@ -75,17 +80,18 @@
                 Cada mensaje de WhatsApp proyecta la excelencia académica de la institución. Ponte a prueba en <strong>15 escenarios reales</strong> de gestión con estudiantes para perfeccionar tu impacto comercial y atención.
             </p>
 
+            <!-- Cuadrícula descriptiva con el desglose de niveles -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left max-w-3xl mx-auto">
                 <div class="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
-                    <span class="inline-block px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-md mb-2">Básico (Q1 - Q5)</span>
-                    <p class="text-xs text-slate-600 leading-snug">Dominio de tildes, mayúsculas, puntuación básica y homófonos frecuentes.</p>
+                    <span class="inline-block px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-md mb-2">Básico (P1 - P5)</span>
+                    <p class="text-xs text-slate-600 leading-snug">Dominio de tildes, mayúsculas, puntuación básica y expresiones de uso diario.</p>
                 </div>
                 <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100">
-                    <span class="inline-block px-2.5 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded-md mb-2">Intermedio (Q6 - Q10)</span>
+                    <span class="inline-block px-2.5 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded-md mb-2">Intermedio (P6 - P10)</span>
                     <p class="text-xs text-slate-600 leading-snug">Grafías complejas (B/V, C/S/Z), coma vocativa y causales (porque/por qué).</p>
                 </div>
                 <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
-                    <span class="inline-block px-2.5 py-1 bg-indigo-100 text-indigo-800 font-bold text-xs rounded-md mb-2">Avanzado (Q11 - Q15)</span>
+                    <span class="inline-block px-2.5 py-1 bg-indigo-100 text-indigo-800 font-bold text-xs rounded-md mb-2">Avanzado (P11 - P15)</span>
                     <p class="text-xs text-slate-600 leading-snug">Redacción integral, tono institucional y agilidad resolutiva comercial.</p>
                 </div>
             </div>
@@ -96,15 +102,19 @@
             </button>
         </section>
 
-        <!-- 2. Pantalla del Cuestionario -->
+        <!-- ==========================================
+             PANTALLA 2: Interfaz Interactiva de Evaluación
+             ========================================== -->
         <section id="quiz-screen" class="hidden space-y-6">
             
+            <!-- Indicadores superiores de avance y categoría -->
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-3">
                 <div class="w-full sm:w-2/3">
                     <div class="flex justify-between text-xs font-bold text-slate-600 mb-1.5">
                         <span id="question-number-text">Pregunta 1 de 15</span>
                         <span id="difficulty-badge" class="px-2.5 py-0.5 rounded-full text-xs bg-emerald-100 text-emerald-800">Básico</span>
                     </div>
+                    <!-- Barra de progreso visual -->
                     <div class="w-full bg-slate-100 rounded-full h-3 border border-slate-200/60 overflow-hidden" role="progressbar" id="progress-bar-container" aria-valuemin="0" aria-valuemax="100" aria-valuenow="6.6">
                         <div id="progress-bar" class="bg-emerald-600 h-full rounded-full transition-all duration-300" style="width: 6.6%"></div>
                     </div>
@@ -114,8 +124,9 @@
                 </div>
             </div>
 
-            <!-- Interfaz del Chat de WhatsApp -->
+            <!-- Módulo de simulación visual de chat de WhatsApp -->
             <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-200">
+                <!-- Cabecera del chat simulado -->
                 <div class="bg-emerald-800 text-white px-4 py-3 flex items-center space-x-3">
                     <div class="w-9 h-9 bg-emerald-600 rounded-full flex items-center justify-center font-bold text-xs border border-emerald-400" aria-hidden="true">
                         EST
@@ -126,12 +137,15 @@
                     </div>
                 </div>
 
+                <!-- Burbujas de diálogo del escenario -->
                 <div class="whatsapp-bg p-4 sm:p-6 space-y-4">
+                    <!-- Consulta del estudiante (Mensaje entrante) -->
                     <div class="bg-white p-3.5 rounded-2xl rounded-tl-none max-w-[90%] sm:max-w-[80%] shadow-sm border border-slate-200">
                         <p class="text-[11px] font-bold text-emerald-800 mb-1" id="chat-sender">Consulta / Inquietud del estudiante:</p>
                         <p class="text-xs sm:text-sm text-slate-800 leading-relaxed" id="chat-context-text">Cargando caso...</p>
                     </div>
 
+                    <!-- Borrador del asesor con errores (Mensaje saliente a corregir) -->
                     <div class="bg-emerald-100/90 p-3.5 rounded-2xl rounded-tr-none max-w-[90%] sm:max-w-[80%] shadow-sm ml-auto border border-emerald-200">
                         <p class="text-[11px] font-bold text-emerald-900 mb-1 flex items-center space-x-1">
                             <i class="fa-solid fa-triangle-exclamation text-amber-600" aria-hidden="true"></i>
@@ -142,7 +156,7 @@
                 </div>
             </div>
 
-            <!-- Panel de Opciones -->
+            <!-- Panel de la pregunta y alternativas -->
             <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-md border border-slate-200">
                 <h3 class="font-bold text-slate-900 text-base sm:text-lg mb-4" id="question-text">
                     ¿Cuál es la forma correcta y profesional de redactar este mensaje?
@@ -150,10 +164,12 @@
 
                 <fieldset>
                     <legend class="sr-only">Selecciona la opción correcta</legend>
-                    <div id="options-container" class="space-y-3"></div>
+                    <div id="options-container" class="space-y-3">
+                        <!-- Las opciones se inyectan dinámicamente mediante JavaScript -->
+                    </div>
                 </fieldset>
 
-                <!-- Panel de Feedback Inmediato -->
+                <!-- Panel de retroalimentación pedagógica en tiempo real -->
                 <div id="feedback-container" class="hidden mt-6 p-4 rounded-xl border transition-all" aria-live="polite">
                     <div class="flex items-start space-x-3">
                         <div id="feedback-icon" class="text-xl mt-0.5" aria-hidden="true"></div>
@@ -171,8 +187,11 @@
             </div>
         </section>
 
-        <!-- 3. Pantalla de Resultados Finales -->
+        <!-- ==========================================
+             PANTALLA 3: Reporte y Diagnóstico Final
+             ========================================== -->
         <section id="results-screen" class="hidden bg-white rounded-2xl shadow-xl p-6 sm:p-10 text-center border border-slate-200 my-4">
+            
             <div class="inline-block p-4 rounded-full bg-slate-100 mb-4" id="score-circle-bg">
                 <div class="text-4xl sm:text-5xl font-extrabold tracking-tight" id="final-score">0/100</div>
             </div>
@@ -180,15 +199,18 @@
             <h2 class="text-2xl font-bold text-slate-900 mb-1" id="level-title">Evaluación Finalizada</h2>
             <p class="text-xs sm:text-sm text-slate-600 mb-6 max-w-lg mx-auto" id="level-description"></p>
 
+            <!-- Lista de temas identificados que requieren refuerzo -->
             <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-left mb-6 max-w-xl mx-auto">
                 <h3 class="font-bold text-slate-800 text-xs sm:text-sm mb-3 flex items-center">
                     <i class="fa-solid fa-bullseye text-emerald-600 mr-2" aria-hidden="true"></i> 
                     Diagnóstico de competencias a reforzar:
                 </h3>
-                <ul id="reinforcement-list" class="space-y-2 text-xs sm:text-sm text-slate-700"></ul>
+                <ul id="reinforcement-list" class="space-y-2 text-xs sm:text-sm text-slate-700">
+                    <!-- Generado dinámicamente según desaciertos -->
+                </ul>
             </div>
 
-            <!-- Frase Institucional Requerida -->
+            <!-- Frase de cierre institucional -->
             <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-8 max-w-xl mx-auto">
                 <blockquote class="text-emerald-950 font-semibold italic text-xs sm:text-base m-0">
                     “Una buena ortografía también comunica confianza, profesionalismo y atención al detalle.”
@@ -203,29 +225,35 @@
 
     </main>
 
-    <!-- Footer -->
+    <!-- Pie de página institucional -->
     <footer class="bg-slate-900 text-slate-400 text-center text-xs py-4 border-t border-slate-800" role="contentinfo">
         <p>Simulador Interactivo de Capacitación | Equipos de Admisiones y Rematrícula</p>
     </footer>
 
-    <!-- Script de Lógica del Simulador -->
+    <!-- ==========================================
+         LÓGICA DEL SIMULADOR (JavaScript)
+         ========================================== -->
     <script>
+        /**
+         * Banco de preguntas con escenarios prácticos de rematrícula.
+         * Estructurado por niveles: Básico (1-5), Intermedio (6-10) y Avanzado (11-15).
+         */
         const questions = [
-            // BÁSICO (1-5)
+            // --- NIVEL BÁSICO ---
             {
                 number: 1,
                 difficulty: "Básico",
                 category: "Hay / Ahí / Ay",
-                context: "Un estudiante consulta disponibilidad de cupos para el turno nocturno.",
-                proposed: "Adiós Carlos, ¡ay! cupos disponibles para el turno noche. Dirígete ay al portal de pago.",
+                context: "Un estudiante consulta sobre la disponibilidad de cupos para la jornada nocturna.",
+                proposed: "Hola Carlos, ¡ay! cupos disponibles para el turno noche. Dirígete ay al portal de pago.",
                 question: "¿Cuál de los siguientes mensajes corrige correctamente el uso de hay, ahí y ay?",
                 options: [
-                    { text: "Adiós Carlos, hay cupos disponibles para el turno noche. Dirígete ahí al portal de pago.", correct: true },
-                    { text: "Adiós Carlos, ahí cupos disponibles para el turno noche. Dirígete hay al portal de pago.", correct: false },
-                    { text: "Adiós Carlos, ay cupos disponibles para el turno noche. Dirígete ahí al portal de pago.", correct: false },
-                    { text: "Adiós Carlos, hay cupos disponibles para el turno noche. Dirígete ay al portal de pago.", correct: false }
+                    { text: "Hola Carlos, hay cupos disponibles para el turno noche. Dirígete ahí al portal de pago.", correct: true },
+                    { text: "Hola Carlos, ahí cupos disponibles para el turno noche. Dirígete hay al portal de pago.", correct: false },
+                    { text: "Hola Carlos, ay cupos disponibles para el turno noche. Dirígete ahí al portal de pago.", correct: false },
+                    { text: "Hola Carlos, hay cupos disponibles para el turno noche. Dirígete ay al portal de pago.", correct: false }
                 ],
-                explanation: "'Hay' proviene del verbo haber e indica existencia. 'Ahí' señala un lugar. 'Ay' es una interjección que expresa emoción o exclamación."
+                explanation: "'Hay' proviene del verbo haber e indica existencia. 'Ahí' indica lugar. 'Ay' es una interjección que expresa exclamación o emoción."
             },
             {
                 number: 2,
@@ -240,43 +268,43 @@
                     { text: "te confirmamos que las clases de la Facultad de Ingeniería inician en Lunes.", correct: false },
                     { text: "Te confirmamos que las Clases de la Facultad de ingeniería inician el lunes.", correct: false }
                 ],
-                explanation: "Las oraciones comienzan con mayúscula. Las dependencias o facultades llevan mayúscula inicial (Facultad de Ingeniería). Los días de la semana van en minúscula."
+                explanation: "Las oraciones inician con mayúscula. Las facultades e instituciones se escriben con mayúscula inicial (Facultad de Ingeniería). Los días de la semana van en minúscula."
             },
             {
                 number: 3,
                 difficulty: "Básico",
                 category: "Tildes",
-                context: "Recordatorio de fecha límite para el pago de la cuota de rematrícula.",
-                proposed: "Adiós María, recuerda que el plazo para pagar tu matricula vence hoy.",
+                context: "Recordatorio de fecha límite para el pago del derecho de rematrícula.",
+                proposed: "Hola Maria, recuerda que el plazo para pagar tu matricula vence hoy.",
                 question: "¿Qué alternativa aplica la acentuación ortográfica correcta?",
                 options: [
-                    { text: "Adiós María, recuerda que el plazo para pagar tu matrícula vence hoy.", correct: true },
-                    { text: "Adiós María, recuerda que el plazo para pagar tu matricula vence hoy.", correct: false },
-                    { text: "Adiós Maria, recuerda que el plazo para pagar tu matrícula vence hoy.", correct: false },
-                    { text: "Adiós María, recuerda que el plazo para pagar tú matrícula vence hoy.", correct: false }
+                    { text: "Hola María, recuerda que el plazo para pagar tu matrícula vence hoy.", correct: true },
+                    { text: "Hola María, recuerda que el plazo para pagar tu matricula vence hoy.", correct: false },
+                    { text: "Hola Maria, recuerda que el plazo para pagar tu matrícula vence hoy.", correct: false },
+                    { text: "Hola María, recuerda que el plazo para pagar tú matrícula vence hoy.", correct: false }
                 ],
-                explanation: "'María' se tilda por hiato. 'Matrícula' es palabra esdrújula. El posesivo 'tu' no lleva tilde."
+                explanation: "'María' se tilda por hiato accentual. 'Matrícula' es una palabra esdrújula. El adjetivo posesivo 'tu' no lleva tilde."
             },
             {
                 number: 4,
                 difficulty: "Básico",
                 category: "Signos de puntuación",
-                context: "Saludo o cierre e inicio de atención por canal digital.",
-                proposed: "Adiós como estas como te puedo ayudar hoy con tu proceso de rematricula.",
+                context: "Saludo inicial e inicio de atención personalizada por el canal digital.",
+                proposed: "Hola como estas como te puedo ayudar hoy con tu proceso de rematricula.",
                 question: "¿Cuál es la opción con el uso correcto de signos interrogativos y tildes?",
                 options: [
-                    { text: "Adiós, ¿cómo estás? ¿Cómo te puedo ayudar hoy con tu proceso de rematrícula?", correct: true },
-                    { text: "Adiós ¿como estas? como te puedo ayudar hoy con tu proceso de rematricula?", correct: false },
-                    { text: "Adiós, como estás, ¿cómo te puedo ayudar hoy con tu proceso de rematrícula?", correct: false },
-                    { text: "¡Adiós! ¿como estas?, ¿Como te puedo ayudar hoy con tu proceso de rematricula?", correct: false }
+                    { text: "Hola, ¿cómo estás? ¿Cómo te puedo ayudar hoy con tu proceso de rematrícula?", correct: true },
+                    { text: "Hola ¿como estas? como te puedo ayudar hoy con tu proceso de rematricula?", correct: false },
+                    { text: "Hola, como estás, ¿cómo te puedo ayudar hoy con tu proceso de rematrícula?", correct: false },
+                    { text: "¡Hola! ¿como estas?, ¿Como te puedo ayudar hoy con tu proceso de rematricula?", correct: false }
                 ],
-                explanation: "En español se usan signos de apertura y cierre (¿?). Los pronombres 'cómo' llevan tilde en oraciones interrogativas."
+                explanation: "En español se utilizan signos dobles (¿?). La palabra 'cómo' lleva tilde al tener valor interrogativo."
             },
             {
                 number: 5,
                 difficulty: "Básico",
                 category: "Tildes Diacríticas",
-                context: "Confirmando la verificación del expediente del estudiante.",
+                context: "Confirmación de la validación del expediente del estudiante.",
                 proposed: "Si, ya recibí tus documentos. El té responderá cuando revise el expediente.",
                 question: "Selecciona el mensaje con las tildes diacríticas aplicadas correctamente:",
                 options: [
@@ -285,15 +313,15 @@
                     { text: "Sí, ya recibí tus documentos. El té responderá cuando revise el expediente.", correct: false },
                     { text: "Si, ya recibí tus documentos. El te responderá cuando revise el expediente.", correct: false }
                 ],
-                explanation: "'Sí' (afirmación) y 'Él' (pronombre) requieren tilde diacrítica. El pronombre 'te' no lleva tilde."
+                explanation: "'Sí' (afirmación) y 'Él' (pronombre personal) se tildan para diferenciarse del condicional 'si' y del artículo 'el'."
             },
 
-            // INTERMEDIO (6-10)
+            // --- NIVEL INTERMEDIO ---
             {
                 number: 6,
                 difficulty: "Intermedio",
                 category: "Porque / Por qué",
-                context: "Explicando el origen de un recargo por pago extemporáneo.",
+                context: "Explicando el motivo de un ajuste de costos por pago extemporáneo.",
                 proposed: "No entiendo porqué me cobran recargo. ¿Porque no me avisaron antes?",
                 question: "¿Cómo debe responder el especialista de forma correcta y oportuna?",
                 options: [
@@ -302,13 +330,13 @@
                     { text: "Te explicamos porqué se generó el recargo: fue por que la fecha límite venció ayer.", correct: false },
                     { text: "Te explicamos por que se generó el recargo: fue porqué la fecha límite venció ayer.", correct: false }
                 ],
-                explanation: "'Por qué' se usa para preguntas o preguntas indirectas. 'Porque' se utiliza para explicar la causa o respuesta."
+                explanation: "'Por qué' (separado y con tilde) introduce preguntas o interrogativas indirectas. 'Porque' (junto y sin tilde) expresa causa o respuesta."
             },
             {
                 number: 7,
                 difficulty: "Intermedio",
                 category: "A ver / Haber",
-                context: "Verificando inconsistencias en el portal financiero.",
+                context: "Verificación de estados financieros en la plataforma institucional.",
                 proposed: "Vamos haber tu historial financiero, debe a ver un error en el sistema.",
                 question: "Elige la opción que corrige la confusión entre 'a ver' y 'haber':",
                 options: [
@@ -317,13 +345,13 @@
                     { text: "Vamos a haber tu historial financiero; debe haber un ajuste pendiente en el sistema.", correct: false },
                     { text: "Vamos a ver tu historial financiero; debe a ver un ajuste pendiente en el sistema.", correct: false }
                 ],
-                explanation: "'A ver' expresa la acción de revisar o mirar. 'Haber' es el verbo impersonal que indica existencia."
+                explanation: "'A ver' se refiere a revisar o mirar. 'Haber' corresponde al verbo impersonal de existencia."
             },
             {
                 number: 8,
                 difficulty: "Intermedio",
                 category: "Uso de B y V",
-                context: "Comunicando un descuento especial por pronto pago.",
+                context: "Notificación de beneficios económicos por pronto pago.",
                 proposed: "Usted obtendrá un veneficio exclusivo si rebalida su matrícula de forma prebentiva.",
                 question: "Marca la opción con la ortografía correcta de las letras B y V:",
                 options: [
@@ -332,13 +360,13 @@
                     { text: "Obtendrás un beneficio exclusivo si rebalidas tu matrícula de forma prebentiva.", correct: false },
                     { text: "Obtendrás un veneficio exclusivo si revalidas tu matrícula de forma prebentiva.", correct: false }
                 ],
-                explanation: "'Beneficio' se escribe con B. 'Revalidar' (de valer) y 'preventiva' (de prevenir) llevan V."
+                explanation: "'Beneficio' deriva de bien (B). 'Revalidar' (de valer) y los adjetivos en -iva como 'preventiva' se escriben con V."
             },
             {
                 number: 9,
                 difficulty: "Intermedio",
                 category: "Uso de C, S y Z",
-                context: "Requerimiento de actualización del certificado de notas.",
+                context: "Solicitud de actualización del certificado de notas para la matrícula.",
                 proposed: "Es nesesario que actualises tu certificado para empesar el prozeso.",
                 question: "Selecciona el mensaje redactado correctamente con C, S y Z:",
                 options: [
@@ -347,30 +375,30 @@
                     { text: "Es necesario que actualices tu certificado para empesar el prozeso.", correct: false },
                     { text: "Es nesesario que actualices tu certificado para empezar el prozeso.", correct: false }
                 ],
-                explanation: "Se escribe 'necesario' (C y S), 'actualices' (cambio de Z a C ante la letra E), 'empezar' (Z) y 'proceso' (C y S)."
+                explanation: "Las grafías normativas son: 'necesario' (C y S), 'actualices' (cambio de Z a C ante E), 'empezar' (Z) y 'proceso' (C y S)."
             },
             {
                 number: 10,
                 difficulty: "Intermedio",
                 category: "Signos de Puntuación (Coma Vocativa)",
-                context: "Atención personalizada dirigida directamente al estudiante.",
-                proposed: "Adiós Laura buenas tardes. Recuerda enviar la cédula para poder ayudarte.",
+                context: "Atención personalizada dirigida por nombre al estudiante.",
+                proposed: "Hola Laura buenas tardes. Recuerda enviar la cédula para poder ayudarte.",
                 question: "Selecciona la opción con la coma vocativa aplicada de forma precisa:",
                 options: [
-                    { text: "Adiós, Laura, buenas tardes. Recuerda enviar el documento de identidad para ayudarte.", correct: true },
-                    { text: "Adiós Laura, buenas tardes. Recuerda enviar el documento de identidad para ayudarte.", correct: false },
-                    { text: "Adiós Laura buenas tardes, recuerda enviar el documento de identidad para ayudarte.", correct: false },
-                    { text: "Adiós, Laura buenas tardes recuerda enviar el documento de identidad para ayudarte.", correct: false }
+                    { text: "Hola, Laura, buenas tardes. Recuerda enviar el documento de identidad para ayudarte.", correct: true },
+                    { text: "Hola Laura, buenas tardes. Recuerda enviar el documento de identidad para ayudarte.", correct: false },
+                    { text: "Hola Laura buenas tardes, recuerda enviar el documento de identidad para ayudarte.", correct: false },
+                    { text: "Hola, Laura buenas tardes recuerda enviar el documento de identidad para ayudarte.", correct: false }
                 ],
-                explanation: "El nombre de la persona a quien nos dirigimos (vocativo) debe aislarse mediante comas."
+                explanation: "El nombre del interlocutor (vocativo) debe ir delimitado por comas cuando se encuentra en medio de la frase."
             },
 
-            // AVANZADO (11-15)
+            // --- NIVEL AVANZADO ---
             {
                 number: 11,
                 difficulty: "Avanzado",
                 category: "Uso de G y J",
-                context: "Coordinando la revisión de asignaturas con la dirección académica.",
+                context: "Coordinación de la revisión de asignaturas con la Dirección Académica.",
                 proposed: "Procederemos a jestionar la solicitud para que el director eliga la mejor opción.",
                 question: "Identifica la corrección de verbos con G y J:",
                 options: [
@@ -379,13 +407,13 @@
                     { text: "Procederemos a gestionar la solicitud para que el director eliga la mejor opción.", correct: false },
                     { text: "Procederemos a jestionar la solicitud para que el director eliga la mejor opción.", correct: false }
                 ],
-                explanation: "'Gestionar' se escribe con G. El verbo 'elegir' cambia a J ante 'a' (elija) para mantener el sonido adecuado."
+                explanation: "'Gestionar' se escribe con G. El verbo 'elegir' cambia a J en 'elija' para mantener la consonancia fonética ante la vocal A."
             },
             {
                 number: 12,
                 difficulty: "Avanzado",
                 category: "Uso de la H",
-                context: "Seguimiento a un estudiante con trámite inconcluso.",
+                context: "Seguimiento a un trámite de reingreso pendiente de pago.",
                 proposed: "Asta el momento no emos recibido tu comprobante. ¿A ocurrido algún problema?",
                 question: "Elige la alternativa que utiliza correctamente la letra H:",
                 options: [
@@ -394,13 +422,13 @@
                     { text: "Hasta el momento no emos recibido tu comprobante. ¿A ocurrido algún inconveniente?", correct: false },
                     { text: "Hasta el momento no hemos recibido tu comprobante. ¿A ocurrido algún inconveniente?", correct: false }
                 ],
-                explanation: "'Hasta' (preposición), 'hemos' (verbo haber) y 'ha' (del verbo haber antes de un participio) llevan H."
+                explanation: "'Hasta' (preposición), 'hemos' (verbo haber) y 'ha' (verbo haber antes de participio) requieren la H inicial."
             },
             {
                 number: 13,
                 difficulty: "Avanzado",
                 category: "Palabras Homófonas",
-                context: "Explicación del trámite de homologación externa.",
+                context: "Explicación del estado de la homologación académica.",
                 proposed: "Asegúrate de que la carta este bien echa. Tubo un pequeño retraso la validación.",
                 question: "Selecciona el mensaje que resuelve las palabras homófonas adecuadamente:",
                 options: [
@@ -409,13 +437,13 @@
                     { text: "Asegúrate de que la carta esté bien hecha. El trámite tubo un pequeño retraso.", correct: false },
                     { text: "Asegúrate de que la carta este bien echa. El trámite tubo un pequeño retraso.", correct: false }
                 ],
-                explanation: "'Hecha' (de hacer) requiere H. 'Tuvo' (del verbo tener) es con V. 'Esté' (verbo estar) lleva tilde."
+                explanation: "'Hecha' (de hacer) lleva H. 'Tuvo' (del verbo tener) se escribe con V. 'Esté' (verbo estar) se tilda por ser palabra aguda."
             },
             {
                 number: 14,
                 difficulty: "Avanzado",
                 category: "Redacción y Concisión",
-                context: "Instrucciones para la selección de asignaturas en el portal.",
+                context: "Instrucción de proceso técnico en la plataforma de selección de asignaturas.",
                 proposed: "Le escribo para informarle a usted de que para poder hacer el pago de sus cuotas tiene que ingresar al link y luego de entrar tiene que darle clic al botón verde.",
                 question: "¿Cuál opción reestructura la instrucción con mayor claridad y concisión profesional?",
                 options: [
@@ -424,13 +452,13 @@
                     { text: "Para pagar tus cuotas tienes que entrar al link y dar clic en el botón de color verde.", correct: false },
                     { text: "Le informo que para pagar las cuotas ingrese al enlace e ingrese dándole clic al botón verde.", correct: false }
                 ],
-                explanation: "La respuesta elimina rodeos e hipervínculos innecesarios, garantizando fluidez y efectividad en la mensajería instantánea."
+                explanation: "La respuesta profesional elimina repeticiones, usa un lenguaje directo ('ingrese', 'enlace') y facilita la lectura rápida."
             },
             {
                 number: 15,
                 difficulty: "Avanzado",
                 category: "Redacción e Impacto de Servicio",
-                context: "Cierre formal y positivo de un caso de reingreso.",
+                context: "Cierre de un caso exitoso de reingreso académico.",
                 proposed: "Bueno ya quedo listo tu trámite. Espero no tengas mas problemas y acuerdate de pagar a tiempo.",
                 question: "Selecciona el mensaje que combina corrección ortográfica y excelencia en la atención:",
                 options: [
@@ -439,14 +467,18 @@
                     { text: "Estimado estudiante su trámite ha finalizado con éxito, quedamos a su disposición y le deseamos un excelente ciclo académico.", correct: false },
                     { text: "Estimado estudiante, su tramite ha finalizado con éxito. Quedamos a su disposición y le deseamos un excelente ciclo académico.", correct: false }
                 ],
-                explanation: "Suma exactitud ortográfica con un todo de comunicación cálido, institucional y respetuoso."
+                explanation: "Aporta precisión técnica (tildes y puntuación correctas) junto con un trato respetuoso y orientado a la excelencia en el servicio."
             }
         ];
 
+        // --- ESTADO GLOBAL DE LA APLICACIÓN ---
         let currentQuestionIndex = 0;
         let score = 0;
         let userAnswers = [];
 
+        /**
+         * Inicializa y reinicia el estado de la prueba.
+         */
         function startQuiz() {
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('quiz-screen').classList.remove('hidden');
@@ -458,15 +490,21 @@
             loadQuestion();
         }
 
+        /**
+         * Carga la pregunta activa en pantalla actualizando textos, barras e interfaz.
+         */
         function loadQuestion() {
             const q = questions[currentQuestionIndex];
             
+            // Actualización del contador de avance
             document.getElementById('question-number-text').innerText = `Pregunta ${q.number} de ${questions.length}`;
             
+            // Cálculo y actualización de la barra de progreso
             const progressPercent = ((q.number) / questions.length) * 100;
             document.getElementById('progress-bar').style.width = `${progressPercent}%`;
             document.getElementById('progress-bar-container').setAttribute('aria-valuenow', progressPercent.toFixed(1));
             
+            // Renderizado del distintivo visual según la dificultad
             const diffBadge = document.getElementById('difficulty-badge');
             diffBadge.innerText = q.difficulty;
             if(q.difficulty === 'Básico') {
@@ -477,11 +515,13 @@
                 diffBadge.className = "px-2.5 py-0.5 rounded-full text-xs bg-indigo-100 text-indigo-800 font-bold";
             }
 
+            // Inserción de textos del caso de WhatsApp
             document.getElementById('category-badge').innerText = q.category;
             document.getElementById('chat-context-text').innerText = q.context;
             document.getElementById('proposed-message').innerText = `"${q.proposed}"`;
             document.getElementById('question-text').innerText = q.question;
 
+            // Inyección de botones de respuesta
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
 
@@ -500,14 +540,19 @@
                 optionsContainer.appendChild(button);
             });
 
+            // Ocultar panel de retroalimentación previo
             document.getElementById('feedback-container').classList.add('hidden');
         }
 
+        /**
+         * Procesa la selección de una respuesta, calcula la puntuación e ilustra el feedback.
+         */
         function selectOption(index) {
             const q = questions[currentQuestionIndex];
             const selectedOpt = q.options[index];
             const isCorrect = selectedOpt.correct;
 
+            // Deshabilitar interaction en botones para evitar doble clic
             const buttons = document.getElementById('options-container').querySelectorAll('button');
             buttons.forEach((btn, idx) => {
                 btn.disabled = true;
@@ -527,18 +572,21 @@
                 }
             });
 
+            // Acumulación proporcional de puntos (100 total / 15 preguntas)
             const pointsPerQuestion = 100 / questions.length;
             if (isCorrect) {
                 score += pointsPerQuestion;
                 updateScoreDisplay();
             }
 
+            // Registro de historial para el reporte final de áreas a reforzar
             userAnswers.push({
                 questionIndex: currentQuestionIndex,
                 isCorrect: isCorrect,
                 category: q.category
             });
 
+            // Mostrar el bloque descriptivo de retroalimentación
             const feedbackContainer = document.getElementById('feedback-container');
             const feedbackIcon = document.getElementById('feedback-icon');
             const feedbackTitle = document.getElementById('feedback-title');
@@ -561,10 +609,16 @@
             feedbackExplanation.innerText = q.explanation;
         }
 
+        /**
+         * Actualiza el contador de puntuación redondeado en el encabezado.
+         */
         function updateScoreDisplay() {
             document.getElementById('current-score').innerText = Math.round(score);
         }
 
+        /**
+         * Controla el flujo hacia la siguiente pregunta o hacia la pantalla de resultados.
+         */
         function nextQuestion() {
             currentQuestionIndex++;
             if (currentQuestionIndex < questions.length) {
@@ -574,6 +628,9 @@
             }
         }
 
+        /**
+         * Calcula el resultado global, asigna el nivel de desempeño y genera el diagnóstico.
+         */
         function showResults() {
             document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('results-screen').classList.remove('hidden');
@@ -586,6 +643,7 @@
 
             scoreDisplay.innerText = `${finalScore}/100`;
 
+            // Escala de valoración del nivel profesional alcanzado
             if (finalScore >= 90) {
                 scoreBg.className = "inline-block p-4 rounded-full bg-emerald-100 text-emerald-800 mb-4";
                 levelTitle.innerText = "Nivel Alcanzado: Experto Senior en Rematrícula";
@@ -600,6 +658,7 @@
                 levelDesc.innerText = "Es importante repasar las reglas gramaticales básicas e intermedias para transmitir total seguridad y precisión a los estudiantes.";
             }
 
+            // Filtrado de áreas de conocimiento con desaciertos
             const incorrectCategories = userAnswers
                 .filter(a => !a.isCorrect)
                 .map(a => a.category);
@@ -615,6 +674,7 @@
                     </li>
                 `;
             } else {
+                // Eliminación de duplicados en temas a reforzar
                 const uniqueCategories = [...new Set(incorrectCategories)];
                 uniqueCategories.forEach(cat => {
                     const li = document.createElement('li');
@@ -625,6 +685,9 @@
             }
         }
 
+        /**
+         * Reinicia el simulador volviendo a la pantalla inicial.
+         */
         function restartQuiz() {
             document.getElementById('results-screen').classList.add('hidden');
             document.getElementById('welcome-screen').classList.remove('hidden');
@@ -633,4 +696,5 @@
     </script>
 </body>
 </html>
+
 
