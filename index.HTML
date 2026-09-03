@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Ortografía - Rematrícula WhatsApp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .whatsapp-bg {
+            background-color: #efeae2;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+        .chat-bubble-out {
+            background-color: #d9fdd3;
+            border-radius: 12px 12px 0px 12px;
+        }
+        .chat-bubble-in {
+            background-color: #ffffff;
+            border-radius: 12px 12px 12px 0px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-emerald-700 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white text-emerald-700 p-2 rounded-full">
+                    <i class="fa-brands font-bold text-xl text-emerald-600"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">Simulador de Redacción & Ortografía</h1>
+                    <p class="text-xs text-emerald-100">Especialistas en Rematrícula y Atención</p>
+                </div>
+            </div>
+            <div id="score-badge" class="hidden bg-emerald-800 text-white text-sm font-semibold px-3 py-1 rounded-full border border-emerald-500">
+                Puntos: <span id="current-score">0</span>/100
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 sm:p-6">
+
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="bg-white rounded-2xl shadow-xl p-6 sm:p-10 text-center border border-slate-100 my-4">
+            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+                <i class="fa-solid fa-comments"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-3">¡Bienvenido al Desafío de Comunicación por WhatsApp!</h2>
+            <p class="text-slate-600 max-w-xl mx-auto mb-6 leading-relaxed">
+                Cada mensaje de WhatsApp es la cara de la universidad. Pon a prueba tus habilidades de ortografía, puntuación y redacción en 15 casos reales de atención a estudiantes.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left max-w-2xl mx-auto">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <span class="inline-block px-2 py-1 bg-green-100 text-green-700 font-semibold text-xs rounded mb-2">Básico</span>
+                    <p class="text-xs text-slate-600">Tildes, hay/ahí/ay, mayúsculas y normas fundamentales.</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <span class="inline-block px-2 py-1 bg-amber-100 text-amber-700 font-semibold text-xs rounded mb-2">Intermedio</span>
+                    <p class="text-xs text-slate-600">Porque/por qué, a ver/haber, B/V, C/S/Z y signos de puntuación.</p>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <span class="inline-block px-2 py-1 bg-rose-100 text-rose-700 font-semibold text-xs rounded mb-2">Avanzado</span>
+                    <p class="text-xs text-slate-600">G/J, H, palabras homófonas y redacción profesional integral.</p>
+                </div>
+            </div>
+
+            <button onclick="startQuiz()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-xl transition duration-200 shadow-lg shadow-emerald-600/30">
+                ¡Comenzar Simulador! <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden space-y-6">
+            
+            <!-- Progress Bar -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-3">
+                <div class="w-full sm:w-2/3">
+                    <div class="flex justify-between text-xs font-semibold text-slate-500 mb-1">
+                        <span id="question-number-text">Pregunta 1 de 15</span>
+                        <span id="difficulty-badge" class="px-2 py-0.5 rounded text-xs">Básico</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-2.5">
+                        <div id="progress-bar" class="bg-emerald-600 h-2.5 rounded-full transition-all duration-300" style="width: 6.6%"></div>
+                    </div>
+                </div>
+                <div class="text-xs font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+                    Categoría: <span id="category-badge" class="text-emerald-700">Tildes</span>
+                </div>
+            </div>
+
+            <!-- WhatsApp Chat Context Box -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-200">
+                <div class="bg-emerald-800 text-white px-4 py-3 flex items-center space-x-3">
+                    <div class="w-9 h-9 bg-emerald-600 rounded-full flex items-center justify-center font-bold text-sm">
+                        EST
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-sm">Estudiante - Rematrícula</h3>
+                        <p class="text-xs text-emerald-200">Contexto del caso de atención</p>
+                    </div>
+                </div>
+
+                <div class="whatsapp-bg p-4 sm:p-6 space-y-4">
+                    <div class="chat-bubble-in p-3 max-w-[85%] sm:max-w-[75%] shadow-sm border border-slate-100">
+                        <p class="text-xs font-bold text-emerald-700 mb-1" id="chat-sender">Caso / Consulta:</p>
+                        <p class="text-sm text-slate-800" id="chat-context-text">Cargando caso...</p>
+                    </div>
+
+                    <!-- Proposed Response with Error -->
+                    <div class="chat-bubble-out p-3 max-w-[85%] sm:max-w-[75%] shadow-sm ml-auto border border-emerald-100">
+                        <p class="text-xs font-bold text-emerald-800 mb-1">Borrador de respuesta con error:</p>
+                        <p class="text-sm text-slate-800 italic" id="proposed-message">Cargando borrador...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question & Options -->
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
+                <h3 class="font-bold text-slate-800 text-base sm:text-lg mb-4 flex items-center" id="question-text">
+                    ¿Cuál es la forma correcta de enviar este mensaje profesionalmente?
+                </h3>
+
+                <div id="options-container" class="space-y-3">
+                    <!-- Dynamic Options -->
+                </div>
+
+                <!-- Feedback Area -->
+                <div id="feedback-container" class="hidden mt-6 p-4 rounded-xl border">
+                    <div class="flex items-start space-x-3">
+                        <div id="feedback-icon" class="text-xl mt-0.5"></div>
+                        <div>
+                            <h4 id="feedback-title" class="font-bold text-sm mb-1"></h4>
+                            <p id="feedback-explanation" class="text-xs sm:text-sm text-slate-700 leading-relaxed"></p>
+                        </div>
+                    </div>
+                    <button id="next-btn" onclick="nextQuestion()" class="mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm py-2 px-6 rounded-lg transition duration-200 float-right">
+                        Siguiente <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                    <div class="clear-both"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="hidden bg-white rounded-2xl shadow-xl p-6 sm:p-10 text-center border border-slate-100 my-4">
+            <div class="inline-block p-4 rounded-full bg-slate-50 mb-4" id="score-circle-bg">
+                <div class="text-4xl font-extrabold" id="final-score">0/100</div>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-slate-800 mb-1" id="level-title">Evaluación Completada</h2>
+            <p class="text-sm text-slate-500 mb-6" id="level-description"></p>
+
+            <!-- Reinforcement Topics -->
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-left mb-6 max-w-xl mx-auto">
+                <h3 class="font-bold text-slate-800 text-sm mb-3 flex items-center">
+                    <i class="fa-solid fa-bullseye text-emerald-600 mr-2"></i> Diagnóstico y temas a reforzar:
+                </h3>
+                <ul id="reinforcement-list" class="space-y-2 text-xs text-slate-700">
+                    <!-- Topics will be inserted here -->
+                </ul>
+            </div>
+
+            <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-8 max-w-xl mx-auto">
+                <p class="text-emerald-900 font-semibold italic text-sm sm:text-base">
+                    “Una buena ortografía también comunica confianza, profesionalismo y atención al detalle.”
+                </p>
+            </div>
+
+            <button onclick="restartQuiz()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-xl transition duration-200 shadow-md">
+                <i class="fa-solid fa-rotate-right mr-2"></i> Intentar de nuevo
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 text-center text-xs py-4">
+        <p>Simulador Interactivo de Capacitación | Rematrícula y Admisiones Universitarias</p>
+    </footer>
+
+    <script>
+        const questions = [
+            // BÁSICO (1-5)
+            {
+                number: 1,
+                difficulty: "Básico",
+                category: "Hay / Ahí / Ay",
+                context: "Un estudiante pregunta sobre la disponibilidad de cupos en la carrera de Psicología.",
+                proposed: "Hola Carlos, ¡ay! cupos disponibles para el turno noche. Dirígete ay al sistema.",
+                question: "¿Cuál opción corrige correctamente los homófonos hay/ahí/ay?",
+                options: [
+                    { text: "Hola Carlos, hay cupos disponibles para el turno noche. Dirígete ahí al sistema.", correct: true },
+                    { text: "Hola Carlos, ahí cupos disponibles para el turno noche. Dirígete hay al sistema.", correct: false },
+                    { text: "Hola Carlos, ay cupos disponibles para el turno noche. Dirígete ahí al sistema.", correct: false },
+                    { text: "Hola Carlos, hay cupos disponibles para el turno noche. Dirígete ay al sistema.", correct: false }
+                ],
+                explanation: "'Hay' proviene del verbo haber e indica existencia. 'Ahí' es un adverbio de lugar. 'Ay' es una interjección para expresar emoción o dolor."
+            },
+            {
+                number: 2,
+                difficulty: "Básico",
+                category: "Mayúsculas",
+                context: "Enviando información sobre fechas de inicio de clases y nombre de facultades.",
+                proposed: "te confirmamos que las clases de la facultad de ingeniería inician en Lunes.",
+                question: "Identifica el mensaje con el uso correcto de mayúsculas:",
+                options: [
+                    { text: "Te confirmamos que las clases de la Facultad de Ingeniería inician en lunes.", correct: true },
+                    { text: "Te confirmamos que las clases de la facultad de Ingeniería inician en Lunes.", correct: false },
+                    { text: "te confirmamos que las clases de la Facultad de Ingeniería inician en Lunes.", correct: false },
+                    { text: "Te confirmamos que las Clases de la Facultad de ingeniería inician en lunes.", correct: false }
+                ],
+                explanation: "Las oraciones inician con mayúscula. Los nombres de instituciones o facultades van con mayúscula inicial (Facultad de Ingeniería). Los días de la semana (lunes) se escriben en minúscula."
+            },
+            {
+                number: 3,
+                difficulty: "Básico",
+                category: "Tildes",
+                context: "Recordatorio sobre el pago de la cuota de rematrícula.",
+                proposed: "Hola Maria, recuerda que el plazo para pagar tu matricula vence hoy.",
+                question: "¿Qué versión aplica correctamente la acentuación de las palabras?",
+                options: [
+                    { text: "Hola María, recuerda que el plazo para pagar tu matrícula vence hoy.", correct: true },
+                    { text: "Hola María, recuerda que el plazo para pagar tu matricula vence hoy.", correct: false },
+                    { text: "Hola Maria, recuerda que el plazo para pagar tu matrícula vence hoy.", correct: false },
+                    { text: "Hola María, recuerda que el plazo para pagar tú matrícula vence hoy.", correct: false }
+                ],
+                explanation: "'María' lleva tilde por hiato (vocal débil tónica). 'Matrícula' es esdrújula, por lo que siempre se tilda. 'Tu' es un posesivo aquí, así que no lleva tilde diacrítica."
+            },
+            {
+                number: 4,
+                difficulty: "Básico",
+                category: "Signos de puntuación",
+                context: "Mensaje de bienvenida y consulta inicial en WhatsApp.",
+                proposed: "Hola como estas como te puedo ayudar hoy con tu proceso de rematricula.",
+                question: "¿Cuál opción muestra los signos de interrogación y puntuación adecuados?",
+                options: [
+                    { text: "Hola, ¿cómo estás? ¿Cómo te puedo ayudar hoy con tu proceso de rematrícula?", correct: true },
+                    { text: "Hola ¿como estas? como te puedo ayudar hoy con tu proceso de rematricula?", correct: false },
+                    { text: "Hola, como estás, ¿cómo te puedo ayudar hoy con tu proceso de rematrícula?", correct: false },
+                    { text: "¡Hola! ¿como estas?, ¿Como te puedo ayudar hoy con tu proceso de rematricula?", correct: false }
+                ],
+                explanation: "En español los signos de interrogación son dobles (¿?). Las preguntas llevan tilde en 'cómo' al ser interrogativas directas. La coma separa el saludo del resto de la oración."
+            },
+            {
+                number: 5,
+                difficulty: "Básico",
+                category: "Tildes Diacríticas",
+                context: "Confirmación de recepción de documentos de un estudiante.",
+                proposed: "Si, ya recibí tus documentos. El té responderá cuando revise el expediente.",
+                question: "Selecciona el mensaje con las tildes diacríticas correctas:",
+                options: [
+                    { text: "Sí, ya recibí tus documentos. Él te responderá cuando revise el expediente.", correct: true },
+                    { text: "Si, ya recibí tus documentos. Él te responderá cuando revise el expediente.", correct: false },
+                    { text: "Sí, ya recibí tus documentos. El té responderá cuando revise el expediente.", correct: false },
+                    { text: "Si, ya recibí tus documentos. El te responderá cuando revise el expediente.", correct: false }
+                ],
+                explanation: "'Sí' (afirmación) y 'Él' (pronombre personal) llevan tilde diacrítica para diferenciarse de 'si' (condicional) y 'el' (artículo). 'Te' (pronombre) no lleva tilde."
+            },
+
+            // INTERMEDIO (6-10)
+            {
+                number: 6,
+                difficulty: "Intermedio",
+                category: "Porque / Por qué / Porqué",
+                context: "Un alumno pregunta la razón del cobro de un recargo en su planilla.",
+                proposed: "No entiendo porqué me cobran recargo. ¿Porque no me avisaron antes?",
+                question: "¿Cómo debe responder el asesor explicando el motivo adecuadamente?",
+                options: [
+                    { text: "Te explicamos por qué se generó el recargo: fue porque el plazo venció ayer.", correct: true },
+                    { text: "Te explicamos porque se generó el recargo: fue por qué el plazo venció ayer.", correct: false },
+                    { text: "Te explicamos porqué se generó el recargo: fue por que el plazo venció ayer.", correct: false },
+                    { text: "Te explicamos por que se generó el recargo: fue porqué el plazo venció ayer.", correct: false }
+                ],
+                explanation: "'Por qué' (separado y con tilde) se usa para preguntas o interrogativas indirectas. 'Porque' (junto y sin tilde) es una conjunción causal que introduce la respuesta o explicación."
+            },
+            {
+                number: 7,
+                difficulty: "Intermedio",
+                category: "A ver / Haber",
+                context: "Informando al estudiante que van a revisar su estado de cuenta.",
+                proposed: "Vamos haber tu historial financiero, debe a ver un error en el sistema.",
+                question: "Elige la oración que corrige la confusión entre 'a ver' y 'haber':",
+                options: [
+                    { text: "Vamos a ver tu historial financiero, debe haber un error en el sistema.", correct: true },
+                    { text: "Vamos haber tu historial financiero, debe a ver un error en el sistema.", correct: false },
+                    { text: "Vamos a haber tu historial financiero, debe haber un error en el sistema.", correct: false },
+                    { text: "Vamos a ver tu historial financiero, debe a ver un error en el sistema.", correct: false }
+                ],
+                explanation: "'A ver' equivale a mirar o revisar. 'Haber' es el verbo auxiliar o indica existencia de algo."
+            },
+            {
+                number: 8,
+                difficulty: "Intermedio",
+                category: "Uso de B y V",
+                context: "Explicación del beneficio del descuento por pronto pago.",
+                proposed: "Usted obtendrá un bene ficio exclusivo si revalida su matricula de forma preveentiva.",
+                question: "Marca la opción que utiliza correctamente las grafías B y V:",
+                options: [
+                    { text: "Usted obtendrá un beneficio exclusivo si revalida su matrícula de forma preventiva.", correct: true },
+                    { text: "Usted obtendrá un veneficio exclusivo si rebalida su matrícula de forma preventiva.", correct: false },
+                    { text: "Usted obtendrá un beneficio exclusivo si rebalida su matrícula de forma prebentiva.", correct: false },
+                    { text: "Usted obtendrá un veneficio exclusivo si revalida su matrícula de forma prebentiva.", correct: false }
+                ],
+                explanation: "'Beneficio' deriva del latín bene (bien) y se escribe con B. 'Revalida' proviene de valer (V). 'Preventiva' proviene de prevenir y los adjetivos terminados en -iva se escriben con V."
+            },
+            {
+                number: 9,
+                difficulty: "Intermedio",
+                category: "Uso de C, S y Z",
+                context: "Notificación de la necesidad de actualizar el certificado de estudios.",
+                proposed: "Es necesario que actualices tu certifikado para empezar el prozeso.",
+                question: "¿Cuál respuesta muestra la ortografía impecable en C, S y Z?",
+                options: [
+                    { text: "Es necesario que actualices tu certificado para empezar el proceso.", correct: true },
+                    { text: "Es nesesario que actualises tu certificado para empezar el proceso.", correct: false },
+                    { text: "Es necesario que actualices tu certificado para empesar el prozeso.", correct: false },
+                    { text: "Es nesesario que actualices tu certificado para empezar el prozeso.", correct: false }
+                ],
+                explanation: "'Necesario' (C y S), 'actualices' (los verbos terminados en -zar cambian Z por C ante E: actualizar -> actualices), 'empezar' (Z) y 'proceso' (C y S)."
+            },
+            {
+                number: 10,
+                difficulty: "Intermedio",
+                category: "Signos de Puntuación (Coma Vocativa)",
+                context: "Atención personalizada dirigiéndose al estudiante por su nombre.",
+                proposed: "Hola Laura buenas tardes. Recuerda enviar la cédula para poder ayudarte.",
+                question: "Selecciona el mensaje que aplica correctamente la coma vocativa:",
+                options: [
+                    { text: "Hola, Laura, buenas tardes. Recuerda enviar la cédula para poder ayudarte.", correct: true },
+                    { text: "Hola Laura, buenas tardes. Recuerda enviar la cédula para poder ayudarte.", correct: false },
+                    { text: "Hola Laura buenas tardes, recuerda enviar la cédula para poder ayudarte.", correct: false },
+                    { text: "Hola, Laura buenas tardes recuerda enviar la cédula para poder ayudarte.", correct: false }
+                ],
+                explanation: "El vocativo (el nombre del interlocutor, 'Laura') debe aislarse entre comas cuando está en medio, o precedido de coma si está al inicio de la frase."
+            },
+
+            // AVANZADO (11-15)
+            {
+                number: 11,
+                difficulty: "Avanzado",
+                category: "Uso de G y J",
+                context: "Agendando una cita con la dirección académica para revisar equivalencias.",
+                proposed: "Procederemos a gesstionar la solicitud con el director para que elija la mejor opción.",
+                question: "Identifica la corrección ortográfica de verbos y palabras con G y J:",
+                options: [
+                    { text: "Procederemos a gestionar la solicitud con el director para que elija la mejor opción.", correct: true },
+                    { text: "Procederemos a jestionar la solicitud con el director para que elija la mejor opción.", correct: false },
+                    { text: "Procederemos a gestionar la solicitud con el director para que eliga la mejor opción.", correct: false },
+                    { text: "Procederemos a jestionar la solicitud con el director para que eliga la mejor opción.", correct: false }
+                ],
+                explanation: "'Gestionar' se escribe con G (terminación -gestionar). 'Elija' proviene del verbo elegir, que ante 'a' o 'o' cambia la G por J para mantener el sonido fuerte (elija)."
+            },
+            {
+                number: 12,
+                difficulty: "Avanzado",
+                category: "Uso de la H",
+                context: "Mensaje de seguimiento a un estudiante que no ha concluido su trámite.",
+                proposed: "Asta el momento no hemos resivido tu comprobante. ¿A ocurrido algún problema?",
+                question: "Elige la opción que utiliza correctamente la letra H y la ortografía general:",
+                options: [
+                    { text: "Hasta el momento no hemos recibido tu comprobante. ¿Ha ocurrido algún problema?", correct: true },
+                    { text: "Asta el momento no hemos recibido tu comprobante. ¿Ha ocurrido algún problema?", correct: false },
+                    { text: "Hasta el momento no emos recibido tu comprobante. ¿A ocurrido algún problema?", correct: false },
+                    { text: "Hasta el momento no hemos recibido tu comprobante. ¿A ocurrido algún problema?", correct: false }
+                ],
+                explanation: "'Hasta' (preposición) lleva H. 'Hemos' (verbo haber) lleva H. 'Ha ocurrido' usa 'ha' del verbo haber (auxiliar del participio ocurrido), por lo que lleva H."
+            },
+            {
+                number: 13,
+                difficulty: "Avanzado",
+                category: "Palabras Homófonas",
+                context: "Explicando la validez y los pasos para el trámite de homologación.",
+                proposed: "Asegúrate de que la carta este bien hecha. Tubo un pequeño retraso, pero ya no hay nada que desecho.",
+                question: "Selecciona el mensaje que corrige adecuadamente las palabras homófonas en el contexto:",
+                options: [
+                    { text: "Asegúrate de que la carta esté bien hecha. Tuvo un pequeño retraso, pero ya no hay nada que desechar.", correct: true },
+                    { text: "Asegúrate de que la carta esté bien echa. Tuvo un pequeño retraso, pero ya no hay nada que desechar.", correct: false },
+                    { text: "Asegúrate de que la carta esté bien hecha. Tubo un pequeño retraso, pero ya no hay nada que desechar.", correct: false },
+                    { text: "Asegúrate de que la carta este bien echa. Tubo un pequeño retraso, pero ya no hay nada que desechar.", correct: false }
+                ],
+                explanation: "'Hecha' (del verbo hacer) lleva H. 'Tuvo' (del verbo tener) es con V ('tubo' con B es un cilindro). 'Esté' lleva tilde del verbo estar."
+            },
+            {
+                number: 14,
+                difficulty: "Avanzado",
+                category: "Redacción y Concisión Professional",
+                context: "Redactando un mensaje extenso para explicar el plan de pagos por cuotas.",
+                proposed: "Le escribo para informarle a usted de que para poder hacer el pago de sus cuotas tiene que ingresar al link y luego de entrar tiene que darle clic al botón verde.",
+                question: "¿Cuál opción reestructura el mensaje con mayor claridad, profesionalismo y concisión?",
+                options: [
+                    { text: "Para realizar el pago de sus cuotas, ingrese al siguiente enlace y seleccione el botón verde.", correct: true },
+                    { text: "Le escribo para informarle que para hacer el pago de sus cuotas usted tiene que ingresar al link y hacer clic en el botón verde.", correct: false },
+                    { text: "Para pagar tus cuotas tienes que entrar al link y dar clic en el botón de color verde.", correct: false },
+                    { text: "Le informo que para pagar las cuotas ingrese al enlace e ingrese dándole clic al botón verde.", correct: false }
+                ],
+                explanation: "La primera opción elimina redundancias ('para informarle a usted que para poder...'), usa un lenguaje directo, profesional y claro ('realizar el pago', 'enlace', 'seleccione')."
+            },
+            {
+                number: 15,
+                difficulty: "Avanzado",
+                category: "Redacción Integral y Tono de Atención",
+                context: "Cierre de un caso complejo de rematrícula extemporánea acordado con el estudiante.",
+                proposed: "Bueno ya quedo listo tu trámite. Espero no tengas mas problemas y acuerdate de pagar a tiempo.",
+                question: "Selecciona la respuesta que combina ortografía perfecta con un excelente servicio al cliente:",
+                options: [
+                    { text: "Estimado estudiante, su trámite ha sido completado con éxito. Quedamos a su disposición si requiere ayuda adicional. ¡Mucho éxito en su periodo académico!", correct: true },
+                    { text: "Bueno ya quedó listo tu trámite. Espero no tengas más problemas y acuérdate de pagar a tiempo.", correct: false },
+                    { text: "Estimado estudiante su trámite ha sido completado con éxito, quedamos a su disposición si requiere ayuda adicional.", correct: false },
+                    { text: "Estimado estudiante, su tramite ha sido completado con éxito. Quedamos a su disposición por si requiere ayuda adicional.", correct: false }
+                ],
+                explanation: "Combina la corrección ortográfica (trámite con tilde, comas bien puestas) con un tono profesional, empático y orientado a la excelencia en el servicio universitario."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+
+        function startQuiz() {
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            document.getElementById('score-badge').classList.remove('hidden');
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            updateScoreDisplay();
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestionIndex];
+            
+            // Updates Progress and Badges
+            document.getElementById('question-number-text').innerText = `Pregunta ${q.number} de ${questions.length}`;
+            document.getElementById('progress-bar').style.width = `${((q.number) / questions.length) * 100}%`;
+            
+            const diffBadge = document.getElementById('difficulty-badge');
+            diffBadge.innerText = q.difficulty;
+            if(q.difficulty === 'Básico') {
+                diffBadge.className = "px-2 py-0.5 rounded text-xs bg-green-100 text-green-700 font-medium";
+            } else if(q.difficulty === 'Intermedio') {
+                diffBadge.className = "px-2 py-0.5 rounded text-xs bg-amber-100 text-amber-700 font-medium";
+            } else {
+                diffBadge.className = "px-2 py-0.5 rounded text-xs bg-rose-100 text-rose-700 font-medium";
+            }
+
+            document.getElementById('category-badge').innerText = q.category;
+            document.getElementById('chat-context-text').innerText = q.context;
+            document.getElementById('proposed-message').innerText = `"${q.proposed}"`;
+            document.getElementById('question-text').innerText = q.question;
+
+            // Load Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 transition duration-150 flex items-start space-x-3 group";
+                btn.onclick = () => selectOption(idx);
+                
+                btn.innerHTML = `
+                    <span class="w-6 h-6 rounded-full border border-slate-300 group-hover:border-emerald-600 group-hover:bg-emerald-600 group-hover:text-white flex items-center justify-center text-xs font-semibold text-slate-500 shrink-0 mt-0.5">
+                        ${String.fromCharCode(65 + idx)}
+                    </span>
+                    <span class="text-xs sm:text-sm text-slate-700 group-hover:text-slate-900 leading-snug">${opt.text}</span>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Hide Feedback
+            document.getElementById('feedback-container').classList.add('hidden');
+        }
+
+        function selectOption(index) {
+            const q = questions[currentQuestionIndex];
+            const selectedOpt = q.options[index];
+            const isCorrect = selectedOpt.correct;
+
+            // Disable all option buttons
+            const buttons = document.getElementById('options-container').querySelectorAll('button');
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                btn.classList.remove('hover:border-emerald-500', 'hover:bg-emerald-50/50');
+                if (idx === index) {
+                    if (isCorrect) {
+                        btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                    } else {
+                        btn.classList.add('bg-rose-100', 'border-rose-500', 'text-rose-900');
+                    }
+                } else if (q.options[idx].correct) {
+                    btn.classList.add('bg-emerald-50', 'border-emerald-300');
+                } else {
+                    btn.classList.add('opacity-50');
+                }
+            });
+
+            // Score logic (each question ~6.66 pts = 100 total)
+            const pointsPerQuestion = 100 / questions.length;
+            if (isCorrect) {
+                score += pointsPerQuestion;
+                updateScoreDisplay();
+            }
+
+            userAnswers.push({
+                questionIndex: currentQuestionIndex,
+                isCorrect: isCorrect,
+                category: q.category
+            });
+
+            // Show Feedback
+            const feedbackContainer = document.getElementById('feedback-container');
+            const feedbackIcon = document.getElementById('feedback-icon');
+            const feedbackTitle = document.getElementById('feedback-title');
+            const feedbackExplanation = document.getElementById('feedback-explanation');
+
+            feedbackContainer.classList.remove('hidden');
+
+            if (isCorrect) {
+                feedbackContainer.className = "mt-6 p-4 rounded-xl border bg-emerald-50 border-emerald-200";
+                feedbackIcon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600"></i>';
+                feedbackTitle.className = "font-bold text-sm text-emerald-900";
+                feedbackTitle.innerText = "¡Excelente elección!";
+            } else {
+                feedbackContainer.className = "mt-6 p-4 rounded-xl border bg-rose-50 border-rose-200";
+                feedbackIcon.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-600"></i>';
+                feedbackTitle.className = "font-bold text-sm text-rose-900";
+                feedbackTitle.innerText = "Oportunidad de mejora";
+            }
+
+            feedbackExplanation.innerText = q.explanation;
+        }
+
+        function updateScoreDisplay() {
+            document.getElementById('current-score').innerText = Math.round(score);
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+
+            const finalScore = Math.round(score);
+            const scoreDisplay = document.getElementById('final-score');
+            const scoreBg = document.getElementById('score-circle-bg');
+            const levelTitle = document.getElementById('level-title');
+            const levelDesc = document.getElementById('level-description');
+
+            scoreDisplay.innerText = `${finalScore}/100`;
+
+            if (finalScore >= 90) {
+                scoreBg.className = "inline-block p-4 rounded-full bg-emerald-100 text-emerald-700 mb-4";
+                levelTitle.innerText = "Nivel Alcanzado: Experto Senior de Rematrícula";
+                levelDesc.innerText = "Tu comunicación por WhatsApp refleja impecable profesionalismo, excelente ortografía y empatía con el estudiante.";
+            } else if (finalScore >= 70) {
+                scoreBg.className = "inline-block p-4 rounded-full bg-amber-100 text-amber-700 mb-4";
+                levelTitle.innerText = "Nivel Alcanzado: Especialista Avanzado";
+                levelDesc.innerText = "Tienes un muy buen manejo de la redacción, pero algunos detalles de puntuación o tildes pueden reforzarse.";
+            } else {
+                scoreBg.className = "inline-block p-4 rounded-full bg-rose-100 text-rose-700 mb-4";
+                levelTitle.innerText = "Nivel Alcanzado: En Formación";
+                levelDesc.innerText = "Es importante repasar las normas gramaticales clave para asegurar que cada mensaje transmita confianza total.";
+            }
+
+            // Identify topics to reinforce
+            const incorrectCategories = userAnswers
+                .filter(a => !a.isCorrect)
+                .map(a => a.category);
+
+            const reinforcementList = document.getElementById('reinforcement-list');
+            reinforcementList.innerHTML = '';
+
+            if (incorrectCategories.length === 0) {
+                reinforcementList.innerHTML = `
+                    <li class="flex items-center text-emerald-700 font-semibold">
+                        <i class="fa-solid fa-check mr-2"></i> ¡Felicidades! No tienes temas críticos por reforzar.
+                    </li>
+                `;
+            } else {
+                // Unique categories
+                const uniqueCategories = [...new Set(incorrectCategories)];
+                uniqueCategories.forEach(cat => {
+                    const li = document.createElement('li');
+                    li.className = "flex items-center text-slate-700";
+                    li.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-500 mr-2 shrink-0"></i> Reforzar: <strong class="ml-1">${cat}</strong>`;
+                    reinforcementList.appendChild(li);
+                });
+            }
+        }
+
+        function restartQuiz() {
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('welcome-screen').classList.remove('hidden');
+            document.getElementById('score-badge').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
