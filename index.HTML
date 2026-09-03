@@ -11,7 +11,7 @@
     <!-- Librería de Iconos FontAwesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Estilos para interfaz tipográfica y chat -->
+    <!-- Estilos personalizados -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
@@ -25,7 +25,6 @@
             background-size: 16px 16px;
         }
 
-        /* Estilos para foco accesible */
         button:focus-visible, a:focus-visible {
             outline: 3px solid #059669;
             outline-offset: 2px;
@@ -34,12 +33,12 @@
 </head>
 <body class="min-h-full flex flex-col justify-between text-slate-800 antialiased">
 
-    <!-- Enlace de salto rápido para accesibilidad por teclado -->
+    <!-- Acceso accesible por teclado -->
     <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:p-4 focus:bg-emerald-600 focus:text-white focus:z-50">
         Saltar al contenido principal
     </a>
 
-    <!-- Encabezado Principal / Header -->
+    <!-- Header -->
     <header class="bg-emerald-800 text-white shadow-lg sticky top-0 z-40" role="banner">
         <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
@@ -52,7 +51,6 @@
                 </div>
             </div>
             
-            <!-- Indicador de Puntaje En Vivo -->
             <div id="score-badge" class="hidden bg-emerald-900/80 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full border border-emerald-500/50 flex items-center space-x-1.5" aria-live="polite">
                 <i class="fa-solid fa-star text-amber-400 text-xs" aria-hidden="true"></i>
                 <span>Puntuación: <strong id="current-score" class="text-white">0</strong>/100</span>
@@ -101,7 +99,6 @@
         <!-- 2. Pantalla del Cuestionario -->
         <section id="quiz-screen" class="hidden space-y-6">
             
-            <!-- Barra de Estado y Progreso -->
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-3">
                 <div class="w-full sm:w-2/3">
                     <div class="flex justify-between text-xs font-bold text-slate-600 mb-1.5">
@@ -117,7 +114,7 @@
                 </div>
             </div>
 
-            <!-- Caja de Chat de WhatsApp (Simulador Visual) -->
+            <!-- Interfaz del Chat de WhatsApp -->
             <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-slate-200">
                 <div class="bg-emerald-800 text-white px-4 py-3 flex items-center space-x-3">
                     <div class="w-9 h-9 bg-emerald-600 rounded-full flex items-center justify-center font-bold text-xs border border-emerald-400" aria-hidden="true">
@@ -130,13 +127,11 @@
                 </div>
 
                 <div class="whatsapp-bg p-4 sm:p-6 space-y-4">
-                    <!-- Mensaje del Estudiante -->
                     <div class="bg-white p-3.5 rounded-2xl rounded-tl-none max-w-[90%] sm:max-w-[80%] shadow-sm border border-slate-200">
                         <p class="text-[11px] font-bold text-emerald-800 mb-1" id="chat-sender">Consulta / Inquietud del estudiante:</p>
                         <p class="text-xs sm:text-sm text-slate-800 leading-relaxed" id="chat-context-text">Cargando caso...</p>
                     </div>
 
-                    <!-- Respuesta Borrador con Error -->
                     <div class="bg-emerald-100/90 p-3.5 rounded-2xl rounded-tr-none max-w-[90%] sm:max-w-[80%] shadow-sm ml-auto border border-emerald-200">
                         <p class="text-[11px] font-bold text-emerald-900 mb-1 flex items-center space-x-1">
                             <i class="fa-solid fa-triangle-exclamation text-amber-600" aria-hidden="true"></i>
@@ -155,9 +150,7 @@
 
                 <fieldset>
                     <legend class="sr-only">Selecciona la opción correcta</legend>
-                    <div id="options-container" class="space-y-3">
-                        <!-- Opciones generadas por JS -->
-                    </div>
+                    <div id="options-container" class="space-y-3"></div>
                 </fieldset>
 
                 <!-- Panel de Feedback Inmediato -->
@@ -180,7 +173,6 @@
 
         <!-- 3. Pantalla de Resultados Finales -->
         <section id="results-screen" class="hidden bg-white rounded-2xl shadow-xl p-6 sm:p-10 text-center border border-slate-200 my-4">
-            
             <div class="inline-block p-4 rounded-full bg-slate-100 mb-4" id="score-circle-bg">
                 <div class="text-4xl sm:text-5xl font-extrabold tracking-tight" id="final-score">0/100</div>
             </div>
@@ -188,15 +180,12 @@
             <h2 class="text-2xl font-bold text-slate-900 mb-1" id="level-title">Evaluación Finalizada</h2>
             <p class="text-xs sm:text-sm text-slate-600 mb-6 max-w-lg mx-auto" id="level-description"></p>
 
-            <!-- Lista de Diagnóstico y Oportunidades -->
             <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 text-left mb-6 max-w-xl mx-auto">
                 <h3 class="font-bold text-slate-800 text-xs sm:text-sm mb-3 flex items-center">
                     <i class="fa-solid fa-bullseye text-emerald-600 mr-2" aria-hidden="true"></i> 
                     Diagnóstico de competencias a reforzar:
                 </h3>
-                <ul id="reinforcement-list" class="space-y-2 text-xs sm:text-sm text-slate-700">
-                    <!-- Dinámico por JS -->
-                </ul>
+                <ul id="reinforcement-list" class="space-y-2 text-xs sm:text-sm text-slate-700"></ul>
             </div>
 
             <!-- Frase Institucional Requerida -->
@@ -214,12 +203,12 @@
 
     </main>
 
-    <!-- Pie de página / Footer -->
+    <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 text-center text-xs py-4 border-t border-slate-800" role="contentinfo">
         <p>Simulador Interactivo de Capacitación | Equipos de Admisiones y Rematrícula</p>
     </footer>
 
-    <!-- Lógica Interactiva en JS -->
+    <!-- Script de Lógica del Simulador -->
     <script>
         const questions = [
             // BÁSICO (1-5)
@@ -272,7 +261,7 @@
                 number: 4,
                 difficulty: "Básico",
                 category: "Signos de puntuación",
-                context: "Saludo inicial e inicio de atención por canal digital.",
+                context: "Saludo o cierre e inicio de atención por canal digital.",
                 proposed: "Adiós como estas como te puedo ayudar hoy con tu proceso de rematricula.",
                 question: "¿Cuál es la opción con el uso correcto de signos interrogativos y tildes?",
                 options: [
